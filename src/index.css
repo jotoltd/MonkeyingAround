@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-grape: #16001e;
+  --color-brand-purple: #610f7f;
+  --color-brand-lavender: #8081ff;
+  --color-brand-magenta: #ff00fc;
+  
+  --font-display: "Fredoka", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Global root scale to make everything beautifully and consistently bigger! */
+html {
+  font-size: 112.5%; /* Base font size 18px on mobile */
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 118.75%; /* 19px on tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 125%; /* 20px on desktop (25% larger than standard) */
+  }
+}
+
+/* Custom whimsical styles */
+@layer utilities {
+  .cartoon-border {
+    border: 3px solid #16001e;
+  }
+  
+  .fun-shadow {
+    box-shadow: 4px 4px 0px 0px #16001e;
+  }
+
+  .fun-shadow-lg {
+    box-shadow: 8px 8px 0px 0px #16001e;
+  }
+  
+  .fun-shadow-magenta {
+    box-shadow: 6px 6px 0px 0px #ff00fc;
+  }
+
+  .fun-shadow-lavender {
+    box-shadow: 6px 6px 0px 0px #8081ff;
+  }
+
+  /* Cute tropical bubble style scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #16001e;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #8081ff;
+    border-radius: 9999px;
+    border: 2px solid #16001e;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ff00fc;
+  }
+}
+
+/* Tropical animated background */
+@keyframes jungleBreeze {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.jungle-item-float {
+  animation: jungleBreeze 6s ease-in-out infinite;
+}
+

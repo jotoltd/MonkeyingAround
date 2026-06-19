@@ -1,0 +1,699 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Menu, 
+  X, 
+  Star, 
+  HelpCircle, 
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  Instagram,
+  Facebook,
+  Sparkles,
+  ArrowLeft
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+
+// Data imports
+import { CampDetails, ACTIVITIES } from '../data';
+
+// Component imports
+import { ActivityCard } from './ActivityCard';
+import { MonkeyQuiz } from './MonkeyQuiz';
+import { LocationSection } from './LocationSection';
+import { CampSessions } from './CampSessions';
+
+// Image imports
+import monkeyJungleHero from '../assets/images/monkey_jungle_hero_1781745774294.jpg';
+import monkeyMascot from '../assets/images/ma_logo.png';
+
+interface HomePageOldProps {
+  onBack?: () => void;
+}
+
+export const HomePageOld: React.FC<HomePageOldProps> = ({ onBack }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [splashAnimation, setSplashAnimation] = useState(true);
+
+  // Auto-scroll anchor links safely
+  const handleScrollTo = (id: string) => {
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Fun little jungle loading splash screen on mount to enhance premium visual identity
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSplashAnimation(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const FAQS = [
+    {
+      q: "What are the exact hours for drop-off and pickup?",
+      a: "Drop-off is expected to open at 08:30 AM and run in a relaxed entry window until 09:15 AM. Activities wrap up around 16:15 PM, and pickups run until 16:30 PM. (Please note that all exact timings are currently to be confirmed is subject to final details)."
+    },
+    {
+      q: "What age groups are accommodated at the camps?",
+      a: "Our camps are expertly structured for children aged 5 to 11. To ensure all children have safe, age-appropriate fun, we divide campers into age sub-groups (e.g., 5–7 age group for sensory arts & basic sports; 8–11 age group for tactical nerf battles, advanced engineering and active relays)."
+    },
+    {
+      q: "Are the instructors fully checked and certified?",
+      a: "Absolutely! Safeguarding is our number one law. Every single team member undergoes an Enhanced DBS check, holds certified child protection training, and we maintain paediatric first-aiders on site at all times during core hours."
+    },
+    {
+      q: "What is your bad weather backup policy?",
+      a: "We are blessed with outstanding indoor facilities at Waterfield Primary School! If it rains, outdoor activities like water play are swapped for indoor sports tournaments, Lego building masterclasses, or dramatic dress-up play in the spacious multi-purpose school gymnasium."
+    },
+    {
+      q: "My child has food allergies. Is cooking and eating safe?",
+      a: "Yes. Monkeying Around is a strictly Nut-Free holiday camp. All cooking sessions utilize hypoallergenic ingredients, and our staff are fully briefed on dietary protocols. Parents can specify full allergy profiles during registration on the Bookaby portal."
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#16001e] text-white font-sans selection:bg-[#ff00fc] selection:text-white relative overflow-x-hidden">
+      
+      {/* 1. Loading Splash overlay */}
+      <AnimatePresence>
+        {splashAnimation && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 bg-[#16001e] z-50 flex flex-col items-center justify-center text-center p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.8, rotate: -10 }}
+              animate={{ scale: [0.8, 1.1, 1], rotate: [0, 15, 0] }}
+              transition={{ duration: 0.8 }}
+              className="w-56 h-56 border-3 border-[#ff00fc] bg-white flex items-center justify-center shadow-[0_0_20px_rgba(255,0,252,0.5)]"
+            >
+              <img 
+                src={monkeyMascot} 
+                alt="Monkeying Around Mascot" 
+                className="w-52 h-52 object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Background whimsical decorations */}
+      <div className="absolute top-[20%] left-[-100px] w-60 h-60 bg-[#8081ff]/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-[50%] right-[-100px] w-65 h-65 bg-[#ff00fc]/10 rounded-full blur-[110px] pointer-events-none" />
+
+      {/* Floating Vine decorations in headers */}
+      <div className="bg-gradient-to-r from-[#16001e] to-[#610f7f] text-white py-2 text-center text-xs font-display font-medium tracking-wide flex items-center justify-center gap-2 px-4 border-b border-[#610f7f] z-40 relative">
+        <span className="animate-bounce">📣</span>
+        <span>Summer Camps Live in Crawley! Ages 5 to 11. <strong>Limited slots remaining!</strong></span>
+        <a 
+          href="https://bookaby.me/monkeying-around-ltd"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline font-mono ml-2 hover:text-[#ff00fc] cursor-pointer"
+        >
+          Book Now
+        </a>
+      </div>
+
+      {/* 2. MAIN HEADER (Sticky & Playful) */}
+      <header className="sticky top-0 bg-[#16001e]/85 backdrop-blur-md border-b border-[#610f7f] z-30 transition-all duration-300 px-4 md:px-8 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          
+          {/* Back button + Brand Logo Group */}
+          <div className="flex items-center gap-4">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="p-2 text-white/60 hover:text-[#ff00fc] hover:bg-white/5 rounded-lg transition-all focus:outline-none cursor-pointer"
+                aria-label="Go back"
+                id="back-to-new-homepage"
+              >
+                <ArrowLeft size={24} />
+              </button>
+            )}
+            <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center text-left focus:outline-none group cursor-pointer"
+              id="brand-logo-btn"
+            >
+              <img 
+                src={monkeyMascot} 
+                alt="Monkeying Around" 
+                className="w-20 h-20 md:w-24 md:h-24 object-contain group-hover:rotate-12 transition-transform duration-300"
+                referrerPolicy="no-referrer"
+              />
+            </button>
+          </div>
+
+          {/* Nav anchors desktop */}
+          <nav className="hidden lg:flex items-center gap-7">
+            {['Activities', 'Sessions', 'Jungle Quiz', 'Location'].map((item) => {
+              const anchor = item.toLowerCase().replace(' ', '-');
+              return (
+                <button
+                  key={item}
+                  onClick={() => handleScrollTo(`${anchor}-container`)}
+                  className="text-sm font-display font-semibold text-white/80 hover:text-[#ff00fc] transition-colors relative py-1 focus:outline-none group cursor-pointer"
+                  id={`nav-link-${anchor}`}
+                >
+                  {item}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#ff00fc] transition-all group-hover:w-full" />
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Book button right desktop */}
+          <div className="hidden sm:flex items-center gap-4">
+            <a
+              href="https://bookaby.me/monkeying-around-ltd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 bg-[#ff00fc] hover:bg-[#ff43fd] text-white font-display font-bold rounded-xl text-xs border border-white/20 tracking-wide transition-all hover:-translate-y-0.5 shadow-[0_4px_15px_rgba(255,0,252,0.3)]"
+              id="header-book-btn"
+            >
+              Book Sizzling Summer! 🚀
+            </a>
+          </div>
+
+          {/* Hamburger Mobile */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 text-white hover:text-[#ff00fc] focus:outline-none cursor-pointer"
+            aria-label="Toggle menu"
+            id="mobile-menu-toggle"
+          >
+            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
+        </div>
+
+        {/* Mobile menu panel */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="lg:hidden bg-[#16001e] border border-[#610f7f] mt-3 rounded-2xl p-4 overflow-hidden shadow-lg"
+            >
+              <div className="grid grid-cols-1 gap-2.5">
+                {['Activities', 'Sessions', 'Jungle Quiz', 'Location'].map((item) => {
+                  const anchor = item.toLowerCase().replace(' ', '-');
+                  return (
+                    <button
+                      key={item}
+                      onClick={() => handleScrollTo(`${anchor}-container`)}
+                      className="text-left py-3 px-4 rounded-xl text-sm font-display font-semibold hover:bg-[#ff00fc]/10 text-white cursor-pointer"
+                      id={`mobile-nav-${anchor}`}
+                    >
+                      🐒 {item}
+                    </button>
+                  );
+                })}
+                <a
+                  href="https://bookaby.me/monkeying-around-ltd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 block text-center py-3 bg-[#ff00fc] text-white font-display font-bold rounded-xl text-sm hover:bg-[#ff43fd] border border-white/25 shadow-[0_4px_15px_rgba(255,0,252,0.35)]"
+                  id="mobile-nav-book-btn"
+                >
+                  Book Summer Camp Online! ⚡
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* 3. HERO SHOWCASE INTRO */}
+      <section className="px-4 md:px-8 pt-8 pb-16" id="welcome-section">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Main Hero Left Block */}
+          <div className="lg:col-span-6 flex flex-col justify-center">
+            
+
+            <h2 className="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold text-white leading-[1.02] tracking-tight">
+              Let's Start <br />
+              <span className="text-[#ff00fc] relative inline-block">
+                Monkeying Around!
+                <span className="absolute left-0 bottom-[-4px] w-full h-2.5 bg-[#8081ff] opacity-40 -skew-x-12" />
+              </span>
+            </h2>
+
+            <p className="text-xl md:text-2xl font-sans text-white/90 leading-relaxed mt-6 max-w-2xl">
+              Keep your child entertained, safe, and absolutely happy all Summer long! Join our premium Multi-Activity Holiday Camps with our first in Crawley. Packed with endless laughter, physical games, creative arts, and splashing pools.
+            </p>
+
+            {/* Quick bullets of activities */}
+            <div className="grid grid-cols-2 gap-4 my-8 font-sans text-base sm:text-lg font-extrabold max-w-xl">
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#8081ff] flex items-center justify-center text-white text-xs shrink-0 font-bold">✓</span>
+                <span>Multi-Sports Sprints</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#ff00fc] flex items-center justify-center text-white text-xs shrink-0 font-bold">✓</span>
+                <span>Arts & Crafts Hub</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#00d2ff] flex items-center justify-center text-white text-xs shrink-0 font-bold">✓</span>
+                <span>Splash Water Fights</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center text-white text-xs shrink-0 font-bold">✓</span>
+                <span>Nerf War Arena</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-green-400 flex items-center justify-center text-white text-xs shrink-0 font-bold">✓</span>
+                <span>Baking & Cooking</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#610f7f] flex items-center justify-center text-white text-xs shrink-0 font-bold">✓</span>
+                <span>Lego Master Builders</span>
+              </div>
+            </div>
+
+            {/* CTA action group */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="https://bookaby.me/monkeying-around-ltd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-[#ff00fc] hover:bg-[#ff43fd] text-white font-display font-extrabold text-base rounded-2xl text-center border border-white/20 transition-transform hover:-translate-y-1 shadow-[0_4px_20px_rgba(255,0,252,0.4)]"
+                id="hero-book-button-cta"
+              >
+                Secure Summer Spot Online! ☀️
+              </a>
+              
+              <button
+                onClick={() => handleScrollTo('jungle-quiz-container')}
+                className="px-8 py-4 bg-transparent hover:bg-white/5 text-white font-display font-semibold text-base rounded-2xl text-center border-2 border-[#8081ff] hover:border-[#ff00fc] transition-colors cursor-pointer"
+                id="hero-quiz-button"
+              >
+                Take the Camp Quiz! 🐵
+              </button>
+            </div>
+
+            {/* Current details callout with Location Pin */}
+            <div className="mt-8 pt-6 border-t border-white/10 flex items-center gap-3">
+              <div className="p-2.5 bg-orange-950/40 text-orange-400 rounded-2xl border border-orange-700/30">
+                📍
+              </div>
+              <p className="text-xs font-sans text-white/80">
+                <strong>Current Active Venue:</strong> Hosted at <strong>Waterfield Primary School, Crawley (RH11 8RA)</strong>. Modern facilities with lockable secure access gates.
+              </p>
+            </div>
+
+          </div>
+
+          {/* Majestic Hero Banner Right Art */}
+          <div className="lg:col-span-6 justify-self-center w-full max-w-lg lg:max-w-none relative">
+            {/* Whimsical absolute leaf elements */}
+            <div className="absolute top-[-20px] left-[-20px] text-5xl jungle-item-float z-10">🌿</div>
+            <div className="absolute bottom-[-20px] right-[-20px] text-5xl jungle-item-float z-10" style={{ animationDelay: '2s' }}>🌴</div>
+            
+            <div className="border-3 border-[#610f7f] rounded-[2.5rem] overflow-hidden bg-[#16001e]/80 p-4 shadow-[0_0_30px_rgba(255,0,252,0.15)] relative">
+              
+              {/* Image banner */}
+              <img 
+                src={monkeyJungleHero} 
+                alt="Cheeky summer monkey swinging in jungle" 
+                className="w-full h-auto rounded-[2rem] object-cover aspect-[4/3] border border-[#610f7f]"
+                referrerPolicy="no-referrer"
+              />
+
+              {/* Dynamic stamp/badge on the banner */}
+              <div className="absolute bottom-8 left-8 bg-[#16001e] text-white p-4 rounded-2xl border border-[#ff00fc]/50 shadow-[0_0_15px_rgba(255,0,252,0.3)] max-w-xs hidden sm:block">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider font-bold">Ofsted Standard</span>
+                </div>
+                <p className="text-xs font-sans leading-tight">
+                  &ldquo;A magnificent camp. Our kids are dynamic, social, safe, and completely exhausted!&rdquo; &mdash; Sarah M., Crawley Mom
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 4. SEVEN SEALS / VALUES BAND */}
+      <section className="bg-gradient-to-r from-[#16001e] via-[#610f7f]/30 to-[#16001e] text-white py-12 border-y border-[#610f7f]/50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          
+          <div className="flex items-start gap-3.5">
+            <span className="text-4xl">🦸</span>
+            <div>
+              <h4 className="font-display font-bold text-lg text-white">
+                DBS child protection Check
+              </h4>
+              <p className="text-xs text-white/70 font-sans mt-1">
+                All staff undergo rigorous background scanning and hold paediatric care certifications.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3.5">
+            <span className="text-4xl">🍕</span>
+            <div>
+              <h4 className="font-display font-bold text-lg text-white">
+                All-In Nutrition Safety
+              </h4>
+              <p className="text-xs text-white/70 font-sans mt-1">
+                100% Nut-Free zones holding meticulous, double-checked dietary logs for all allergy levels.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3.5">
+            <span className="text-4xl">🎯</span>
+            <div>
+              <h4 className="font-display font-bold text-lg text-white">
+                Age Segmented Play
+              </h4>
+              <p className="text-xs text-white/70 font-sans mt-1">
+                Divided groups (5-7 and 8-11 years) guarantee age-relevant engineering and sporty games.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3.5">
+            <span className="text-4xl">🥇</span>
+            <div>
+              <h4 className="font-display font-bold text-lg text-white">
+                Daily Celebration
+              </h4>
+              <p className="text-xs text-white/70 font-sans mt-1">
+                Every toddler can showcase their cool skills and takes home custom diplomas daily!
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 5. SIGNATURE ACTIVITIES CONTAINER */}
+      <section className="px-4 md:px-8 py-20 max-w-7xl mx-auto" id="activities-container">
+        <div className="flex flex-col items-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-white text-center tracking-tight">
+            Our 8 Epic Jungle Programs
+          </h2>
+          <p className="text-base text-white/80 text-center max-w-lg font-sans mt-3">
+            Every day is a fresh adventure! We rotate multiple tasks to keep minds razor-sharp and small muscles bounding with joy.
+          </p>
+        </div>
+
+        {/* 8 Activities Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {ACTIVITIES.map((act) => (
+            <ActivityCard key={act.id} activity={act} />
+          ))}
+        </div>
+      </section>
+
+      {/* 6. SUMMER CAMP BOOKING SESSIONS */}
+      <section className="bg-gradient-to-b from-[#16001e] via-[#610f7f]/10 to-[#16001e] py-20 border-y border-[#610f7f]/20" id="sessions-container">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="flex flex-col items-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-display font-medium text-white text-center tracking-tight">
+              Sizzling Summer Sessions
+            </h2>
+            <p className="text-sm md:text-base text-white/80 text-center max-w-lg font-sans mt-3">
+              Explore our active summer days! Choose between standard full-day schedules or extended play hours with instant booking processing.
+            </p>
+          </div>
+
+          <CampSessions />
+        </div>
+      </section>
+
+
+
+      {/* 8. FUN PERSONALITY QUIZ */}
+      <section className="bg-[#16001e] border-y border-[#610f7f]/20 py-20 relative overflow-hidden" id="jungle-quiz-container">
+        {/* Whimsical visual overlay decoration: top corner vector vine */}
+        <div className="absolute top-[-30px] right-[-30px] text-7xl opacity-30 select-none pointer-events-none transform rotate-45">🌿</div>
+        
+        <div className="max-w-4xl mx-auto px-4 md:px-8">
+          <div className="flex flex-col items-center mb-10 text-center">
+            <h2 className="text-3xl md:text-5xl font-display font-medium text-white tracking-tight">
+              Which Type of Monkey Are You?
+            </h2>
+            <p className="text-sm md:text-base text-white/80 max-w-md font-sans mt-3">
+              Answer 3 swift, whimsical questions with your child to discover their ultimate monkey personality style and matched camp activities!
+            </p>
+          </div>
+
+          {/* Interactive Quiz Component */}
+          <MonkeyQuiz />
+        </div>
+      </section>
+
+      {/* 9. LOCATION & MAP SCHEDULING */}
+      <section className="px-4 md:px-8 py-20 max-w-7xl mx-auto" id="location-container">
+        <div className="flex flex-col items-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-white text-center tracking-tight">
+            How to Reach Waterfield Primary
+          </h2>
+          <p className="text-base text-white/80 text-center max-w-md font-sans mt-3">
+            Convenient drop-ins, strict safeguarding gates, and full facility summaries.
+          </p>
+        </div>
+
+        {/* Location Section component map */}
+        <LocationSection />
+      </section>
+
+      {/* 10. REAL PARENT WORD & REVIEWS */}
+      <section className="bg-[#16001e] border-y border-[#610f7f]/20 py-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="flex flex-col items-center mb-12 text-center">
+            <h3 className="text-3xl md:text-4xl font-display font-medium text-white">
+              Word in the Jungle 💬
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div className="border-2 border-[#610f7f] bg-[#16001e]/80 rounded-3xl p-6 shadow-[0_4px_20px_rgba(255,0,252,0.06)] hover:border-[#8081ff] transition-all relative">
+              <span className="text-3xl font-mono text-[#8081ff] absolute top-4 right-6 opacity-30 select-none">"</span>
+              <div className="flex items-center gap-1 text-yellow-500 mb-3">
+                {[1, 2, 3, 4, 5].map((s) => <Star key={s} size={14} className="fill-current" />)}
+              </div>
+              <p className="text-sm font-sans text-white/90 leading-relaxed mb-4">
+                &ldquo;My 8-year-old was obsessed with the Nerf Wars on Thursdays! They set up inflatables and played capture-the-flag. He came home with self-made medals and fell straight to sleep.&rdquo;
+              </p>
+              <div>
+                <p className="font-display font-bold text-sm text-[#8081ff]">Marcus T.</p>
+                <p className="text-[10px] font-mono text-white/50">Parent of Leo (Age 8) &mdash; Crawley</p>
+              </div>
+            </div>
+
+            <div className="border-2 border-[#ff00fc] bg-[#16001e]/90 rounded-3xl p-6 shadow-[0_4px_25px_rgba(255,0,252,0.15)] relative">
+              <span className="text-3xl font-mono text-[#ff00fc] absolute top-4 right-6 opacity-30 select-none">"</span>
+              <div className="flex items-center gap-1 text-yellow-500 mb-3">
+                {[1, 2, 3, 4, 5].map((s) => <Star key={s} size={14} className="fill-current" />)}
+              </div>
+              <p className="text-sm font-sans text-white/90 leading-relaxed mb-4">
+                &ldquo;Absolutely stellar camp. We booked a full week and got the sibling offer for our daughters. Wednesday water fights were a huge hit, and they loved bringing home baking boxes.&rdquo;
+              </p>
+              <div>
+                <p className="font-display font-bold text-sm text-[#ff00fc]">Clara & Dave H.</p>
+                <p className="text-[10px] font-mono text-white/50">Parents of Jess (Age 6) & Amy (Age 9)</p>
+              </div>
+            </div>
+
+            <div className="border-2 border-[#610f7f] bg-[#16001e]/80 rounded-3xl p-6 shadow-[0_4px_20px_rgba(255,0,252,0.06)] hover:border-[#8081ff] transition-all relative">
+              <span className="text-3xl font-mono text-[#8081ff] absolute top-4 right-6 opacity-30 select-none">"</span>
+              <div className="flex items-center gap-1 text-yellow-500 mb-3">
+                {[1, 2, 3, 4, 5].map((s) => <Star key={s} size={14} className="fill-current" />)}
+              </div>
+              <p className="text-sm font-sans text-white/90 leading-relaxed mb-4">
+                &ldquo;Highly organized, secure, and DBS-checked! Handing over barcodes at the Waterfield Primary reception hall feels very reassuring. The staff are incredibly friendly monkeys themselves.&rdquo;
+              </p>
+              <div>
+                <p className="font-display font-bold text-sm text-[#8081ff]">Rohan P.</p>
+                <p className="text-[10px] font-mono text-white/50">Parent of Diya (Age 11)</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 11. FAQ ACCORDION */}
+      <section className="px-4 md:px-8 py-20 max-w-4xl mx-auto" id="faq-container">
+        <div className="flex flex-col items-center mb-10 text-center">
+          <div className="p-3 bg-[#ff00fc]/10 text-[#ff00fc] rounded-full mb-3">
+            <HelpCircle size={24} />
+          </div>
+          <h3 className="text-3xl font-display font-medium text-white">
+            Frequently Asked Questions
+          </h3>
+          <p className="text-sm font-sans text-white/70 mt-1 max-w-sm">
+            Everything you need to worry-free send your little monkey to our campgrounds.
+          </p>
+        </div>
+
+        {/* Dynamic FAQ list */}
+        <div className="space-y-3.5">
+          {FAQS.map((faq, idx) => {
+            const isActive = activeFaq === idx;
+            return (
+              <div 
+                key={idx} 
+                className="border border-[#610f7f]/40 bg-[#16001e]/80 rounded-2xl overflow-hidden shadow-[0_2px_15px_rgba(255,0,252,0.04)]"
+              >
+                <button
+                  onClick={() => setActiveFaq(isActive ? null : idx)}
+                  className="w-full p-5 flex justify-between items-center text-left focus:outline-none transition-colors hover:bg-[#ff00fc]/5 cursor-pointer"
+                  id={`faq-btn-toggle-${idx}`}
+                >
+                  <span className="font-display font-bold text-sm md:text-base text-white">
+                    {faq.q}
+                  </span>
+                  <div className={`p-1 bg-[#8081ff]/10 text-[#8081ff] rounded-md transition-transform ${
+                    isActive ? 'rotate-180 text-[#ff00fc]' : ''
+                  }`}>
+                    <ChevronDown size={16} />
+                  </div>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isActive && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="px-5 pb-5 pt-1 text-xs md:text-sm font-sans text-white/80 leading-relaxed border-t border-[#610f7f]/20 bg-[#610f7f]/10">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 12. FINAL FOOTER JUNGLE */}
+      <footer className="bg-[#16001e] text-white pt-20 pb-8 border-t border-[#610f7f]/30">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          
+          {/* Conversion banner card */}
+          <div className="border border-[#ff00fc]/50 rounded-3xl bg-gradient-to-r from-[#16001e] via-[#610f7f]/60 to-[#16001e] p-8 md:p-10 shadow-[0_4px_30px_rgba(255,0,252,0.15)] flex flex-col md:flex-row justify-between items-center gap-8 mb-16 relative overflow-hidden">
+            
+            {/* Ambient bottom light */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#8081ff]/20 to-[#ff00fc]/20 pointer-events-none opacity-40" />
+
+            <div className="relative max-w-xl text-center md:text-left">
+              <h4 className="text-3xl md:text-4xl font-display font-bold text-white tracking-tight leading-none">
+                Ready to swing into summer fun with us?
+              </h4>
+              <p className="text-sm font-sans text-white/95 mt-3 leading-relaxed">
+                Slots are historically limited and fill up weeks in advance! Ensure your children make memories, gain coordinates of physical health, and take home cool baking & craft skills.
+              </p>
+            </div>
+
+            <div className="relative flex-shrink-0 w-full md:w-auto text-center">
+              <a
+                href="https://bookaby.me/monkeying-around-ltd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-[#ff00fc] hover:bg-[#ff43fd] text-white font-display font-extrabold text-base rounded-2xl block text-center border border-white/20 shadow-[0_4px_20px_rgba(255,0,252,0.4)] transition-all hover:-translate-y-1 cursor-pointer"
+                id="footer-action-btn-primary"
+              >
+                Register Online Instantly! 🐒
+              </a>
+              <p className="text-[10px] text-white/70 font-sans mt-2">
+                Processed via secure portal on Bookaby
+              </p>
+            </div>
+          </div>
+
+          {/* Core Footer Link Directory */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 border-b border-white/10 pb-12 mb-10">
+            <div className="md:col-span-5">
+              <div className="mb-3">
+                <img src={monkeyMascot} alt="Monkey logo" className="w-20 h-20 object-contain" />
+              </div>
+              <p className="text-xs text-white/70 font-sans leading-relaxed max-w-sm">
+                Holiday multi-activity camps built to elevate physical fitness, foster artistic self-confidence, and keep children aged 5 to 11 safe and happily engaged on school holidays.
+              </p>
+              <div className="flex gap-2.5 mt-5">
+                <a href="https://facebook.com" className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center border border-white/10 text-white transition-colors" aria-label="Facebook">
+                  <Facebook size={16} />
+                </a>
+                <a href="https://instagram.com" className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center border border-white/10 text-white transition-colors" aria-label="Instagram">
+                  <Instagram size={16} />
+                </a>
+              </div>
+            </div>
+
+            {/* Quick anchors */}
+            <div className="md:col-span-3">
+              <h5 className="font-display font-bold text-xs uppercase tracking-wider text-[#8081ff] mb-3.5">
+                SUMMER PROGRAMS
+              </h5>
+              <ul className="space-y-2 text-xs text-white/75 font-sans">
+                <li>⚽ Multi-Sports Madness</li>
+                <li>🎨 Arts & Crafts Studio</li>
+                <li>🧁 Cold-Baking & Cooking</li>
+                <li>🔫 Shield Nerf Arena</li>
+                <li>💦 Wednesday Splash Zone</li>
+                <li>🧱 Master Lego Builders</li>
+              </ul>
+            </div>
+
+            {/* Venue & Details Info */}
+            <div className="md:col-span-4 font-sans text-xs text-white/70">
+              <h5 className="font-display font-bold text-xs uppercase tracking-wider text-[#8081ff] mb-3.5">
+                CAMP HEADQUARTERS
+              </h5>
+              <p className="font-semibold text-white mb-1">Waterfield Primary School</p>
+              <p>Waterfield Gardens, Crawley RH11 8RA</p>
+              
+
+              <p className="font-semibold text-white mt-4 mb-1">Secure Registration Page</p>
+              <a 
+                href="https://bookaby.me/monkeying-around-ltd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-[#ff00fc] inline-flex items-center gap-1 font-bold text-white"
+              >
+                bookaby.me/monkeying-around-ltd <ExternalLink size={10} />
+              </a>
+            </div>
+
+          </div>
+
+          {/* Legal bottom row */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-white/50 font-sans">
+            <p>&copy; {new Date().getFullYear()} Monkeying Around Ltd. Registered in England & Wales. All rights reserved.</p>
+            <div className="flex gap-4">
+              <span className="hover:text-white transition-colors">Ofsted Safety Compliant</span>
+              <span>&bull;</span>
+              <span className="hover:text-white transition-colors">Safeguarding First</span>
+              <span>&bull;</span>
+              <span className="hover:text-white transition-colors">Nut-Free Policy</span>
+            </div>
+          </div>
+
+        </div>
+      </footer>
+
+    </div>
+  );
+};

@@ -1,0 +1,6 @@
+{
+  "name": "Monkeying Around Holiday Camps",
+  "description": "Multi-Activity Holiday Camps for Children Aged 5 to 11. Full of multi-sports, arts & crafts, cooking, dress-up, Nerf wars, water fights, talent shows, and Lego building in Crawley.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
