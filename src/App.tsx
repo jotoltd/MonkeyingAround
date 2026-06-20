@@ -172,9 +172,8 @@ export default function App() {
 
             <h2 className="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold text-white leading-[1.02] tracking-tight">
               Let's Start <br />
-              <span className="text-[#ff00fc] relative inline-block">
+              <span className="text-[#ff00fc]">
                 Monkeying Around!
-                <span className="absolute left-0 bottom-[-4px] w-full h-2.5 bg-[#8081ff] opacity-40 -skew-x-12" />
               </span>
             </h2>
 
@@ -238,7 +237,7 @@ export default function App() {
               <img 
                 src={monkeyJungleHero} 
                 alt="Cheeky summer monkey swinging in jungle" 
-                className="w-full h-auto rounded-[2rem] object-cover aspect-[4/3] border border-[#610f7f]"
+                className="w-full h-auto rounded-[2rem] object-contain border border-[#610f7f]"
                 referrerPolicy="no-referrer"
               />
 
