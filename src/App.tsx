@@ -24,7 +24,7 @@ import { CampSessions } from './components/CampSessions';
 import { HomePageOld } from './components/HomePageOld';
 
 // Image imports
-import monkeyJungleHero from './assets/images/monkey_jungle_hero_1781745774294.jpg';
+import monkeyJungleHero from './assets/images/crawley_hero.png';
 import monkeyMascot from './assets/images/ma_logo.png';
 
 export default function App() {
@@ -118,7 +118,7 @@ export default function App() {
           href="https://bookaby.me/monkeying-around-ltd"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline font-mono ml-2 hover:text-[#ff00fc] cursor-pointer"
+          className="font-mono ml-2 hover:text-[#ff00fc] cursor-pointer"
         >
           Book Now
         </a>
@@ -137,7 +137,7 @@ export default function App() {
             <img 
               src={monkeyMascot} 
               alt="Monkeying Around" 
-              className="w-20 h-20 md:w-24 md:h-24 object-contain group-hover:rotate-12 transition-transform duration-300"
+              className="w-40 h-40 md:w-48 md:h-48 object-contain group-hover:rotate-12 transition-transform duration-300"
               referrerPolicy="no-referrer"
             />
           </button>
@@ -159,40 +159,7 @@ export default function App() {
             </a>
           </div>
 
-          {/* Hamburger Mobile */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-white hover:text-[#ff00fc] focus:outline-none cursor-pointer"
-            aria-label="Toggle menu"
-            id="mobile-menu-toggle"
-          >
-            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
-        </div>
-
-        {/* Mobile menu panel */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden bg-[#16001e] border border-[#610f7f] mt-3 rounded-2xl p-4 overflow-hidden shadow-lg"
-            >
-              <div className="grid grid-cols-1 gap-2.5">
-                <a
-                  href="https://bookaby.me/monkeying-around-ltd"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 block text-center py-3 bg-[#ff00fc] text-white font-display font-bold rounded-xl text-sm hover:bg-[#ff43fd] border border-white/25 shadow-[0_4px_15px_rgba(255,0,252,0.35)]"
-                  id="mobile-nav-book-btn"
-                >
-                  Book Summer Camp Online! ⚡
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          </div>
       </header>
 
       {/* 3. HERO SHOWCASE INTRO */}
@@ -560,7 +527,7 @@ export default function App() {
                 href="https://bookaby.me/monkeying-around-ltd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-[#ff00fc] inline-flex items-center gap-1 font-bold text-white"
+                className="hover:text-[#ff00fc] inline-flex items-center gap-1 font-bold text-white"
               >
                 bookaby.me/monkeying-around-ltd <ExternalLink size={10} />
               </a>
@@ -571,13 +538,18 @@ export default function App() {
           {/* Legal bottom row */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-white/50 font-sans">
             <p>&copy; {new Date().getFullYear()} Monkeying Around Ltd. Company number 17281002. Registered in England & Wales. All rights reserved.</p>
-            <div className="flex gap-4">
-              <span className="hover:text-white transition-colors">Ofsted Safety Compliant</span>
-              <span>&bull;</span>
-              <span className="hover:text-white transition-colors">Safeguarding First</span>
-              <span>&bull;</span>
-              <span className="hover:text-white transition-colors">Nut-Free Policy</span>
-            </div>
+            <p>
+              Website created by{' '}
+              <a 
+                href="https://sitesthatslap.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white/70 hover:text-white transition-colors"
+              >
+                Sites That Slap
+              </a>
+              {' '}("sitesthatslap.com")
+            </p>
           </div>
 
         </div>
