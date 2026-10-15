@@ -1,19 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Clock, ArrowRight, Sparkles, AlertCircle } from 'lucide-react';
+import { Session, fetchSessions } from '../lib/sessions';
 
-interface Session {
-  id: string;
-  type: 'Extended' | 'Full Day';
-  date: string;
-  dayName: string;
-  time: string;
-  price: string;
-  url: string;
-  badge?: string;
-}
-
-const SESSION_DATA: Session[] = [
+const FALLBACK_SESSIONS: Session[] = [
   {
     id: 'mon19-oct-extended',
     type: 'Extended',
@@ -162,8 +152,15 @@ const SESSION_DATA: Session[] = [
 
 export const CampSessions: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<'All' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday'>('All');
+  const [sessions, setSessions] = useState<Session[]>(FALLBACK_SESSIONS);
 
-  const filteredSessions = SESSION_DATA.filter(session => {
+  useEffect(() => {
+    fetchSessions().then(remote => {
+      if (remote !== null) setSessions(remote);
+    });
+  }, []);
+
+  const filteredSessions = sessions.filter(session => {
     if (selectedDay === 'All') return true;
     return session.dayName === selectedDay;
   });
@@ -206,7 +203,7 @@ export const CampSessions: React.FC = () => {
                     ? 'bg-[#ff00fc]/15 text-[#ff00fc] border-[#ff00fc]/40'
                     : 'bg-[#8081ff]/15 text-[#8081ff] border-[#8081ff]/40'
                 }`}>
-                  ⚡ {session.type} Day
+                  ⚡ {session.type === 'Extended' ? 'Extended Day' : 'Full Day'}
                 </span>
               </div>
 

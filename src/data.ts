@@ -70,7 +70,7 @@ export const ACTIVITIES: Activity[] = [
   {
     id: "water-fights",
     title: "Splash Zone Water Fights",
-    description: "Beat the summer heat! High-intensity splash showdowns with sponge bombs, pump water blasters, and water buckets. Pure laughter and absolutely dripping wet summer joy!",
+    description: "Get ready to get soaked! High-intensity splash showdowns with sponge bombs, pump water blasters, and water buckets. Pure laughter and absolutely dripping wet fun!",
     ageRange: "5 - 11 Years",
     iconName: "Waves",
     color: "#ff00fc",

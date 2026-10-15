@@ -67,11 +67,11 @@ export const LocationSection: React.FC = () => {
             CONVENIENT CRAWLEY BASE
           </span>
           <h3 className="text-3xl font-display font-medium text-white mb-4">
-            Our Summer Location 🌴
+            Our Camp Location 🌴
           </h3>
           
           <p className="text-sm font-sans text-white/80 leading-relaxed mb-6 font-medium">
-            We are fully based at <strong>Waterfield Primary School</strong> for our Summer camps. This excellent school venue features secure physical perimeters, outstanding sports infrastructure, and modern indoor halls designed to keep kids safe in any elements.
+            We are fully based at <strong>Waterfield Primary School</strong> for our holiday camps. This excellent school venue features secure physical perimeters, outstanding sports infrastructure, and modern indoor halls designed to keep kids safe in any elements.
           </p>
 
           {/* Quick detail items */}
@@ -127,7 +127,7 @@ export const LocationSection: React.FC = () => {
                   Upcoming Camps
                 </p>
                 <p className="text-sm text-white font-semibold mt-0.5">
-                  Summer Holiday Bookings Active!
+                  October Half-Term Bookings Active!
                 </p>
                 <p className="text-xs text-white/70 leading-tight">
                   More school venues to be announced in Crawley and surrounding regions soon!

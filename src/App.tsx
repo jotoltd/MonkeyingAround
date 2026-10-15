@@ -23,6 +23,10 @@ import { LocationSection } from './components/LocationSection';
 import { CampSessions } from './components/CampSessions';
 import { HomePageOld } from './components/HomePageOld';
 
+const AdminPage = React.lazy(() =>
+  import('./components/AdminPage').then(m => ({ default: m.AdminPage }))
+);
+
 // Image imports
 import monkeyJungleHero from './assets/images/crawley_hero.png';
 import monkeyMascot from './assets/images/ma_logo.png';
@@ -32,6 +36,16 @@ export default function App() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [splashAnimation, setSplashAnimation] = useState(true);
   const [showOldHomepage, setShowOldHomepage] = useState(false);
+  const checkIsAdmin = () =>
+    window.location.hash.startsWith('#/admin') || window.location.pathname.startsWith('/admin');
+
+  const [isAdminRoute, setIsAdminRoute] = useState(checkIsAdmin);
+
+  useEffect(() => {
+    const onHashChange = () => setIsAdminRoute(checkIsAdmin());
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   // Auto-scroll anchor links safely
   const handleScrollTo = (id: string) => {
@@ -73,6 +87,14 @@ export default function App() {
     }
   ];
 
+  if (isAdminRoute) {
+    return (
+      <React.Suspense fallback={<div className="min-h-screen bg-[#16001e]" />}>
+        <AdminPage />
+      </React.Suspense>
+    );
+  }
+
   return (
     <>
       {showOldHomepage ? (
@@ -113,7 +135,7 @@ export default function App() {
       {/* Floating Vine decorations in headers */}
       <div className="bg-gradient-to-r from-[#16001e] to-[#610f7f] text-white py-2 text-center text-xs font-display font-medium tracking-wide flex items-center justify-center gap-2 px-4 border-b border-[#610f7f] z-40 relative">
         <span className="animate-bounce">📣</span>
-        <span>Summer Camps Live in Crawley! Ages 5 to 11. <strong>Limited slots remaining!</strong></span>
+        <span>October Half-Term Camps Live in Crawley! Ages 5 to 11. <strong>Limited slots remaining!</strong></span>
         <a 
           href="https://bookaby.me/monkeying-around-ltd"
           target="_blank"
@@ -155,7 +177,7 @@ export default function App() {
               className="px-5 py-2.5 bg-[#ff00fc] hover:bg-[#ff43fd] text-white font-display font-bold rounded-xl text-xs border border-white/20 tracking-wide transition-all hover:-translate-y-0.5 shadow-[0_4px_15px_rgba(255,0,252,0.3)]"
               id="header-book-btn"
             >
-              Book Sizzling Summer! 🚀
+              Book October Half-Term! 🚀
             </a>
           </div>
 
@@ -178,7 +200,7 @@ export default function App() {
             </h2>
 
             <p className="text-xl md:text-2xl font-sans text-white/90 leading-relaxed mt-6 max-w-2xl">
-              Keep your child entertained, safe, and absolutely happy all Summer long! Join our premium Multi-Activity Holiday Camps with our first in Crawley. Packed with endless laughter, physical games, creative arts, and splashing pools.
+              Keep your child entertained, safe, and absolutely happy all Half-Term long! Join our premium Multi-Activity Holiday Camps with our first in Crawley. Packed with endless laughter, physical games, creative arts, and splashing pools.
             </p>
 
             {/* Quick bullets of activities */}
@@ -218,7 +240,7 @@ export default function App() {
                 className="px-8 py-4 bg-[#ff00fc] hover:bg-[#ff43fd] text-white font-display font-extrabold text-base rounded-2xl text-center border border-white/20 transition-transform hover:-translate-y-1 shadow-[0_4px_20px_rgba(255,0,252,0.4)]"
                 id="hero-book-button-cta"
               >
-                Secure Summer Spot Online! ☀️
+                Secure Half-Term Spot Online! 🍂
               </a>
             </div>
 
@@ -236,7 +258,7 @@ export default function App() {
               {/* Image banner */}
               <img 
                 src={monkeyJungleHero} 
-                alt="Cheeky summer monkey swinging in jungle" 
+                alt="Cheeky monkey swinging in jungle" 
                 className="w-full h-auto rounded-[2rem] object-contain border border-[#610f7f]"
                 referrerPolicy="no-referrer"
               />
@@ -304,15 +326,15 @@ export default function App() {
       </section>
 
       
-      {/* 6. SUMMER CAMP BOOKING SESSIONS */}
+      {/* 6. HALF-TERM CAMP BOOKING SESSIONS */}
       <section className="bg-gradient-to-b from-[#16001e] via-[#610f7f]/10 to-[#16001e] py-20 border-y border-[#610f7f]/20" id="sessions-container">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex flex-col items-center mb-12">
             <h2 className="text-4xl md:text-5xl font-display font-medium text-white text-center tracking-tight">
-              Sizzling Summer Sessions
+              October Half-Term Sessions
             </h2>
             <p className="text-sm md:text-base text-white/80 text-center max-w-lg font-sans mt-3">
-              Explore our active summer days! Choose between standard full-day schedules or extended play hours with instant booking processing.
+              Explore our active half-term days! Choose between standard full-day schedules or extended play hours with instant booking processing.
             </p>
           </div>
 
@@ -500,7 +522,7 @@ export default function App() {
             {/* Quick anchors */}
             <div className="md:col-span-3">
               <h5 className="font-display font-bold text-xs uppercase tracking-wider text-[#8081ff] mb-3.5">
-                SUMMER PROGRAMS
+                HALF-TERM PROGRAMS
               </h5>
               <ul className="space-y-2 text-xs text-white/75 font-sans">
                 <li>⚽ Multi-Sports Madness</li>
